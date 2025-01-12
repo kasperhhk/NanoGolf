@@ -7,12 +7,18 @@ var screenHeight = 1000;
 
 Raylib.InitWindow(screenWidth, screenHeight, "NanoGolf");
 
-var target = Raylib.LoadRenderTexture(screenWidth, screenHeight);
+var canvas = Raylib.LoadRenderTexture(screenWidth, screenHeight);
 
-Raylib.BeginTextureMode(target);
+var course = Course.Default;
+
+Raylib.BeginTextureMode(canvas);
 Raylib.ClearBackground(Color.RayWhite);
-Course.Default.Draw();
+course.Draw();
 Raylib.EndTextureMode();
+
+var bot = Raylib.LoadImage("Resources/Sprites/GreenBot.png");
+var botTexture = Raylib.LoadTextureFromImage(bot);
+Raylib.UnloadImage(bot);
 
 Vector2? prevMousePos = null;
 
@@ -23,7 +29,7 @@ while (!Raylib.WindowShouldClose())
 
     if (Raylib.IsMouseButtonDown(MouseButton.Left))
     {
-        Raylib.BeginTextureMode(target);
+        Raylib.BeginTextureMode(canvas);
         if (prevMousePos != null) 
         {
             Raylib.DrawLineEx(prevMousePos.Value, mousePos, 10, Color.Black);
@@ -36,7 +42,8 @@ while (!Raylib.WindowShouldClose())
 
     Raylib.ClearBackground(Color.RayWhite);
 
-    Raylib.DrawTextureRec(target.Texture, new Rectangle(0, 0, target.Texture.Width, -target.Texture.Height), new Vector2(0, 0), Color.White);
+    Raylib.DrawTextureRec(canvas.Texture, new Rectangle(0, 0, canvas.Texture.Width, -canvas.Texture.Height), new Vector2(0, 0), Color.White);
+    Raylib.DrawTextureEx(botTexture, course.Start, 0, 5, Color.White);
 
     Raylib.DrawFPS(0, 0);
     Raylib.EndDrawing();
@@ -44,5 +51,6 @@ while (!Raylib.WindowShouldClose())
     prevMousePos = mousePos;
 }
 
-Raylib.UnloadRenderTexture(target);
+Raylib.UnloadTexture(botTexture);
+Raylib.UnloadRenderTexture(canvas);
 Raylib.CloseWindow();

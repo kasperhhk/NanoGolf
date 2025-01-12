@@ -5,10 +5,14 @@ namespace NanoGolf;
 public class Course
 {
     public Vector2[] Shape;
+    public Vector2 Start;
+    public Vector2 Goal;
 
-    public Course(Vector2[] shape)
+    public Course(Vector2[] shape, Vector2 start, Vector2 goal)
     {
         Shape = shape;
+        Start = start;
+        Goal = goal;
     }
 
     public void Draw()
@@ -18,6 +22,9 @@ public class Course
             Raylib.DrawLineEx(Shape[i - 1], Shape[i], 5, Color.Blue);
             Raylib.DrawCircleV(Shape[i], 2.5f, Color.Blue);
         }
+
+        Raylib.DrawCircleV(Start, 10, Color.Green);
+        Raylib.DrawCircleV(Goal, 10, Color.Magenta);
     }
 
     public static Course Default => new Course([
@@ -28,5 +35,5 @@ public class Course
         new Vector2(500, 800),
         new Vector2(200, 800),
         new Vector2(200, 200)
-    ]);
+    ], new Vector2(350, 700), new Vector2(700, 350));
 }
