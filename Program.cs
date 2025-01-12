@@ -55,7 +55,7 @@ while (!Raylib.WindowShouldClose())
     Raylib.ClearBackground(Color.RayWhite);
 
     Raylib.DrawTextureRec(canvas.Texture, new Rectangle(0, 0, canvas.Texture.Width, -canvas.Texture.Height), new Vector2(0, 0), Color.White);
-    Raylib.DrawTextureEx(bot.Texture, bot.Position, 0, bot.Scale, Color.White);
+    bot.Draw();
 
     Raylib.DrawFPS(0, 0);
     Raylib.EndDrawing();
