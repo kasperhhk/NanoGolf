@@ -1,2 +1,12 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Raylib_cs;
+
+Raylib.InitWindow(1000, 1000, "NanoGolf");
+
+while (!Raylib.WindowShouldClose())
+{
+    var frameTime = Raylib.GetFrameTime();
+
+
+}
+
+Raylib.CloseWindow();
