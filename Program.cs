@@ -16,26 +16,38 @@ Raylib.ClearBackground(Color.RayWhite);
 course.Draw();
 Raylib.EndTextureMode();
 
-var bot = Raylib.LoadImage("Resources/Sprites/GreenBot.png");
-var botTexture = Raylib.LoadTextureFromImage(bot);
-Raylib.UnloadImage(bot);
+var bot = Bot.GreenBot;
+bot.Init(course);
 
 Vector2? prevMousePos = null;
 
+var pause = false;
+
 while (!Raylib.WindowShouldClose())
 {
-    var frameTime = Raylib.GetFrameTime();
-    var mousePos = Raylib.GetMousePosition();
-
-    if (Raylib.IsMouseButtonDown(MouseButton.Left))
+    if (!pause)
     {
-        Raylib.BeginTextureMode(canvas);
-        if (prevMousePos != null) 
+        var frameTime = Raylib.GetFrameTime();
+        bot.Move(frameTime);
+
+        var mousePos = Raylib.GetMousePosition();
+        if (Raylib.IsMouseButtonDown(MouseButton.Left))
         {
-            Raylib.DrawLineEx(prevMousePos.Value, mousePos, 10, Color.Black);
+            Raylib.BeginTextureMode(canvas);
+            if (prevMousePos != null)
+            {
+                Raylib.DrawLineEx(prevMousePos.Value, mousePos, 10, Color.Black);
+            }
+            Raylib.DrawCircleV(mousePos, 5, Color.Black);
+            Raylib.EndTextureMode();
         }
-        Raylib.DrawCircleV(mousePos, 5, Color.Black);
-        Raylib.EndTextureMode();
+
+        prevMousePos = mousePos;
+    }
+
+    if (Raylib.IsMouseButtonPressed(MouseButton.Right))
+    {
+        pause = !pause;
     }
 
     Raylib.BeginDrawing();
@@ -43,14 +55,12 @@ while (!Raylib.WindowShouldClose())
     Raylib.ClearBackground(Color.RayWhite);
 
     Raylib.DrawTextureRec(canvas.Texture, new Rectangle(0, 0, canvas.Texture.Width, -canvas.Texture.Height), new Vector2(0, 0), Color.White);
-    Raylib.DrawTextureEx(botTexture, course.Start, 0, 5, Color.White);
+    Raylib.DrawTextureEx(bot.Texture, bot.Position, 0, 5, Color.White);
 
     Raylib.DrawFPS(0, 0);
     Raylib.EndDrawing();
-
-    prevMousePos = mousePos;
 }
 
-Raylib.UnloadTexture(botTexture);
+Raylib.UnloadTexture(bot.Texture);
 Raylib.UnloadRenderTexture(canvas);
 Raylib.CloseWindow();
