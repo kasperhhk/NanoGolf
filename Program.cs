@@ -1,4 +1,5 @@
-﻿using Raylib_cs;
+﻿using NanoGolf;
+using Raylib_cs;
 using System.Numerics;
 
 var screenWidth = 1000;
@@ -10,6 +11,7 @@ var target = Raylib.LoadRenderTexture(screenWidth, screenHeight);
 
 Raylib.BeginTextureMode(target);
 Raylib.ClearBackground(Color.RayWhite);
+Course.Default.Draw();
 Raylib.EndTextureMode();
 
 Vector2? prevMousePos = null;
@@ -35,7 +37,6 @@ while (!Raylib.WindowShouldClose())
     Raylib.ClearBackground(Color.RayWhite);
 
     Raylib.DrawTextureRec(target.Texture, new Rectangle(0, 0, target.Texture.Width, -target.Texture.Height), new Vector2(0, 0), Color.White);
-
 
     Raylib.DrawFPS(0, 0);
     Raylib.EndDrawing();
