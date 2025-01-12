@@ -7,10 +7,16 @@ public class Bot
     public Texture2D Texture;
     public Vector2 Position;
     public Vector2 Velocity;
+    public float Scale;
+    public float Width;
+    public float Height;
 
     public Bot(Texture2D texture)
     {
         Texture = texture;
+        Scale = 5;
+        Width = texture.Width * Scale;
+        Height = texture.Height * Scale;
     }
 
     public void Init(Course course)
