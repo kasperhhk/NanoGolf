@@ -6,7 +6,7 @@ public class Bot
 {
     public Texture2D Texture;
     public Vector2 Position;
-    public Vector2 Velocity;
+    public float Speed;
     public float Rotation;
     public float Scale;
     public float Width;
@@ -21,7 +21,7 @@ public class Bot
     {
         Texture = texture;
         Scale = 5;
-        Rotation = 90;
+        Rotation = 45;
         Width = texture.Width * Scale;
         Height = texture.Height * Scale;
 
@@ -34,7 +34,7 @@ public class Bot
     public void Init(Course course)
     {
         Position = course.Start;
-        Velocity = new Vector2(0, 0);
+        Speed = 20;
         FrontHitbox.X = Position.X;
         FrontHitbox.Y = Position.Y;
         BackHitbox.X = Position.X;
@@ -43,14 +43,17 @@ public class Bot
 
     public void Move(float frameTime)
     {
-        Position.X += Velocity.X * frameTime;
-        Position.Y += Velocity.Y * frameTime;
+        var rotationRadians = float.DegreesToRadians(Rotation);
+        var deltaX = Speed * MathF.Cos(rotationRadians) * frameTime;
+        var deltaY = Speed * MathF.Sin(rotationRadians) * frameTime;
+        Position.X += deltaX;
+        Position.Y -= deltaY;
         Rotation += 90 * frameTime;
 
         FrontHitbox.X = Position.X;
         FrontHitbox.Y = Position.Y;
 
-        var rot = Matrix3x2.CreateRotation(float.DegreesToRadians(Rotation));
+        var rot = Matrix3x2.CreateRotation(rotationRadians);
 
         var frontCenter = new Vector2(Position.X + Width / 2, Position.Y + Width / 2) - Position;        
         var frontRotated = Vector2.Transform(frontCenter, rot);
@@ -69,8 +72,11 @@ public class Bot
     public void Draw()
     {
         Raylib.DrawTextureEx(Texture, Position, Rotation, Scale, Color.White);
-        Raylib.DrawRectangleLinesEx(FrontHitbox, 3, Color.Red);
-        Raylib.DrawRectangleLinesEx(BackHitbox, 3, Color.Red);
+        if (Debug.ShowDebug)
+        {
+            Raylib.DrawRectangleLinesEx(FrontHitbox, 3, Color.Red);
+            Raylib.DrawRectangleLinesEx(BackHitbox, 3, Color.Red);
+        }
     }
 
     public static Bot GreenBot => new Bot(GetTexture("GreenBot.png"));

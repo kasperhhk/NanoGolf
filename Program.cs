@@ -1,6 +1,7 @@
 ﻿using NanoGolf;
 using Raylib_cs;
 using System.Numerics;
+using Box2D.NET.Bindings;
 
 var screenWidth = 1000;
 var screenHeight = 1000;
@@ -25,6 +26,8 @@ var pause = false;
 
 while (!Raylib.WindowShouldClose())
 {
+    B2
+
     if (!pause)
     {
         var frameTime = Raylib.GetFrameTime();
@@ -50,6 +53,11 @@ while (!Raylib.WindowShouldClose())
         pause = !pause;
     }
 
+    if (Raylib.IsKeyPressed(KeyboardKey.D))
+    {
+        Debug.ShowDebug = !Debug.ShowDebug;
+    }
+
     Raylib.BeginDrawing();
 
     Raylib.ClearBackground(Color.RayWhite);
@@ -64,3 +72,8 @@ while (!Raylib.WindowShouldClose())
 Raylib.UnloadTexture(bot.Texture);
 Raylib.UnloadRenderTexture(canvas);
 Raylib.CloseWindow();
+
+public static class Debug
+{
+    public static bool ShowDebug = false;
+}
