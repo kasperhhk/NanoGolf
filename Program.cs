@@ -26,8 +26,6 @@ var pause = false;
 
 while (!Raylib.WindowShouldClose())
 {
-    B2
-
     if (!pause)
     {
         var frameTime = Raylib.GetFrameTime();
